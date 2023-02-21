@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 using Training.Models;
 
-namespace Training.Mapping
+namespace Training.Configurations
 {
-    public class AssignmentMap : EntityTypeConfiguration<Assignment>
+    public class AssignmentConfiguration : EntityTypeConfiguration<Assignment>
     {
-        public AssignmentMap()
+        public AssignmentConfiguration()
         {
             HasKey(_ => _.Id);
 

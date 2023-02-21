@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 using Training.Models;
 
-namespace Training.Mapping
+namespace Training.Configurations
 {
-    public class UserMap : EntityTypeConfiguration<User>
+    public class UserConfiguration : EntityTypeConfiguration<User>
     {
-        public UserMap()
+        public UserConfiguration()
         {
             HasKey(_ => _.Id);
 

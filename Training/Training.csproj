@@ -135,10 +135,10 @@
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Data\BaseEntity.cs" />
     <Compile Include="Data\ISchoolDbContext.cs" />
-    <Compile Include="Mapping\CourseMap.cs" />
-    <Compile Include="Mapping\UserMap.cs" />
-    <Compile Include="Mapping\AssignmentMap.cs" />
-    <Compile Include="Mapping\SchoolMap.cs" />
+    <Compile Include="Configurations\CourseConfiguration.cs" />
+    <Compile Include="Configurations\UserConfiguration.cs" />
+    <Compile Include="Configurations\AssignmentConfiguration.cs" />
+    <Compile Include="Configurations\SchoolConfiguration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

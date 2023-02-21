@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 using Training.Models;
 
-namespace Training.Mapping
+namespace Training.Configurations
 {
-    public class CourseMap : EntityTypeConfiguration<Course>
+    public class CourseConfiguration : EntityTypeConfiguration<Course>
     {
-        public CourseMap()
+        public CourseConfiguration()
         {
             HasKey(_ => _.Id);
 
