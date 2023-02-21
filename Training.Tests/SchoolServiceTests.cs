@@ -19,10 +19,10 @@ namespace Training.Tests
                 .Returns(new School ());
 
             var service = new Repository<School>(ctx);
-            service.Insert(new School());
+            service.Create(new School());
 
             dbSet.Received(1).Add(Arg.Any<School>());
-            ctx.Received(1).SaveChanges();
+            ctx.Received(1).SaveChangesAsync();
         }
     }
 }

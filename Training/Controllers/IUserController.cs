@@ -1,14 +1,20 @@
-﻿using System.Web.Http;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http;
 using Training.Models;
 
 namespace Training.Controllers
 {
     public interface IUserController
     {
-        IHttpActionResult Get(int id);
-        IHttpActionResult Create(string firstName, string lastName, string phoneNumber, Type type);
-        IHttpActionResult Delete(int id);
-        IHttpActionResult Update(int id, string firstName, string lastName, string phoneNumber, Type type);
-        IHttpActionResult GetAll();
+        Task<IHttpActionResult> Create(string firstName, string lastName, string phoneNumber, Type type, CancellationToken token);
+
+        Task<IHttpActionResult> Delete(int id, CancellationToken token);
+
+        Task<IHttpActionResult> Update(int id, string firstName, string lastName, string phoneNumber, Type type, CancellationToken token);
+
+        Task<IHttpActionResult> Get(int id, CancellationToken token);
+
+        Task<IHttpActionResult> GetAll(CancellationToken token);
     }
 }

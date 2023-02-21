@@ -18,7 +18,7 @@ namespace Training.Tests
             var controller = new SchoolController(schoolService);
 
             var actionResult = controller.Create("name", "desc", new byte[1]);
-            var createdResult = actionResult as CreatedAtRouteNegotiatedContentResult<School>;
+            var createdResult = actionResult.Result as CreatedAtRouteNegotiatedContentResult<School>;
 
             createdResult.Should().NotBeNull();
             createdResult?.RouteName.Should().Be("DefaultApi");

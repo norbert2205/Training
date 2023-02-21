@@ -1,13 +1,18 @@
-﻿using System.Web.Http;
+﻿using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace Training.Controllers
 {
     public interface ICourseController
     {
-        IHttpActionResult Get(int id);
-        IHttpActionResult Create(string name);
-        IHttpActionResult Delete(int id);
-        IHttpActionResult Update(int id, string name);
-        IHttpActionResult GetAll();
+        Task<IHttpActionResult> Get(int id);
+
+        Task<IHttpActionResult> Create(string name);
+
+        Task<IHttpActionResult> Delete(int id);
+
+        Task<IHttpActionResult> Update(int id, string name);
+
+        Task<IHttpActionResult> GetAll();
     }
 }

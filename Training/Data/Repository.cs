@@ -8,19 +8,13 @@ namespace Training.Data
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly ISchoolDbContext _ctx;
-        private IDbSet<T> _entities;
 
         public Repository(ISchoolDbContext ctx)
         {
             _ctx = ctx;
         }
 
-        public T GetById(object id)
-        {
-            return Entities.Find(id);
-        }
-
-        public void Insert(T entity)
+        public void Create(T entity)
         {
             try
             {
@@ -28,8 +22,8 @@ namespace Training.Data
                 {
                     throw new ArgumentNullException(nameof(entity));
                 }
-                Entities.Add(entity);
-                _ctx.SaveChanges();
+                _ctx.Set<T>().Add(entity);
+                _ctx.SaveChangesAsync();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -56,7 +50,7 @@ namespace Training.Data
                 {
                     throw new ArgumentNullException(nameof(entity));
                 }
-                _ctx.SaveChanges();
+                _ctx.SaveChangesAsync();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -81,8 +75,8 @@ namespace Training.Data
                 {
                     throw new ArgumentNullException(nameof(entity));
                 }
-                Entities.Remove(entity);
-                _ctx.SaveChanges();
+                _ctx.Set<T>().Remove(entity);
+                _ctx.SaveChangesAsync();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -100,8 +94,11 @@ namespace Training.Data
             }
         }
 
-        public virtual IQueryable<T> Table => Entities;
+        public IQueryable<T> GetById(int id)
+        {
+            return _ctx.Set<T>().Where(_ => _.Id == id).AsNoTracking();
+        }
 
-        private IDbSet<T> Entities => _entities ?? (_entities = _ctx.Set<T>());
+        public IQueryable<T> GetAll => _ctx.Set<T>().AsNoTracking();
     }
 }

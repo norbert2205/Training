@@ -1,4 +1,7 @@
-﻿using System.Web.Http;
+﻿using System.Net;
+using System;
+using System.Threading.Tasks;
+using System.Web.Http;
 using Training.Models;
 using Training.Services;
 
@@ -15,64 +18,104 @@ namespace Training.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetAll()
+        public async Task<IHttpActionResult> GetAll()
         {
-            var item = _service.GetCourses();
-
-            if (item == null)
+            try
             {
-                return NotFound();
-            }
+                var item = await _service.GetCoursesAsync();
 
-            return Ok(item);
+                if (item == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(item);
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpGet]
-        public IHttpActionResult Get(int id)
+        public async Task<IHttpActionResult> Get(int id)
         {
-            var item = _service.GetCourse(id);
-
-            if (item == null)
+            try
             {
-                return NotFound();
+                var item = await _service.GetCourseAsync(id);
+
+                if (item == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(item);
             }
-
-            return Ok(item);
-        }
-
-        [HttpPost]
-        public IHttpActionResult Create(string name)
-        {
-            var course = new Course
+            catch (Exception e)
             {
-                Name = name
-            };
-
-            _service.InsertCourse(course);
-
-            return CreatedAtRoute("DefaultApi", new { id = course.Id }, course);
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPost]
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> Create(string name)
         {
-            _service.DeleteCourse(_service.GetCourse(id));
-            return Ok();
+            try
+            {
+                var course = new Course
+                {
+                    Name = name
+                };
+
+                _service.CreateCourse(course);
+
+                return CreatedAtRoute("DefaultApi", new { id = course.Id }, course);
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> Delete(int id)
+        {
+            try
+            {
+                _service.DeleteCourse(await _service.GetCourseAsync(id));
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPut]
-        public IHttpActionResult Update(int id, string name)
+        public async Task<IHttpActionResult> Update(int id, string name)
         {
-            var course = _service.GetCourse(id);
-
-            if (course is null)
+            try
             {
-                return NotFound();
-            }
+                var course = await _service.GetCourseAsync(id);
 
-            course.Name = name;
-            _service.UpdateCourse(course);
-            return Ok();
+                if (course is null)
+                {
+                    return NotFound();
+                }
+
+                course.Name = name;
+                _service.UpdateCourse(course);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
     }
 }

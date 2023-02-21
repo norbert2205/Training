@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
 
@@ -13,19 +15,21 @@ namespace Training.Services
             _assignmentRepository = assignmentRepository;
         }
 
-        public IQueryable<Assignment> GetAssignments()
+        public async Task<IEnumerable<Assignment>> GetAssignmentsAsync()
         {
-            return _assignmentRepository.Table;
+            return await _assignmentRepository.GetAll
+                .ToListAsync();
         }
 
-        public Assignment GetAssignment(int id)
+        public async Task<Assignment> GetAssignmentAsync(int id)
         {
-            return _assignmentRepository.GetById(id);
+            return await _assignmentRepository.GetById(id)
+                .FirstOrDefaultAsync();
         }
 
-        public void InsertAssignment(Assignment assignment)
+        public void CreateAssignment(Assignment assignment)
         {
-            _assignmentRepository.Insert(assignment);
+            _assignmentRepository.Create(assignment);
         }
 
         public void UpdateAssignment(Assignment assignment)

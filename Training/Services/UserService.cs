@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
 
@@ -13,19 +15,21 @@ namespace Training.Services
             _userRepository = userRepository;
         }
 
-        public IQueryable<User> GetUsers()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            return _userRepository.Table;
+            return await _userRepository.GetAll
+                .ToListAsync();
         }
 
-        public User GetUser(int id)
+        public async Task<User> GetUserAsync(int id)
         {
-            return _userRepository.GetById(id);
+            return await _userRepository.GetById(id)
+                .FirstOrDefaultAsync();
         }
 
-        public void InsertUser(User user)
+        public void CreateUser(User user)
         {
-            _userRepository.Insert(user);
+            _userRepository.Create(user);
         }
 
         public void UpdateUser(User user)

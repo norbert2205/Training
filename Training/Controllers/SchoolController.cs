@@ -1,4 +1,7 @@
-﻿using System.Web.Http;
+﻿using System.Net;
+using System;
+using System.Threading.Tasks;
+using System.Web.Http;
 using Training.Models;
 using Training.Services;
 
@@ -15,68 +18,108 @@ namespace Training.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetAll()
+        public async Task<IHttpActionResult> GetAll()
         {
-            var item = _service.GetSchools();
-
-            if (item == null)
+            try
             {
-                return NotFound();
-            }
+                var item = await _service.GetSchoolsAsync();
 
-            return Ok(item);
+                if (item == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(item);
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }        
         
         [HttpGet]
-        public IHttpActionResult Get(int id)
+        public async Task<IHttpActionResult> Get(int id)
         {
-            var item = _service.GetSchool(id);
-
-            if (item == null)
+            try
             {
-                return NotFound();
+                var item = await _service.GetSchoolAsync(id);
+
+                if (item == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(item);
             }
-
-            return Ok(item);
-        }
-
-        [HttpPost]
-        public IHttpActionResult Create(string name, string description, byte[] logo)
-        {
-            var school = new School
+            catch (Exception e)
             {
-                Name = name,
-                Description = description,
-                Logo = logo
-            };
-
-            _service.InsertSchool(school);
-
-            return CreatedAtRoute("DefaultApi", new { id = school.Id }, school);
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPost]
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> Create(string name, string description, byte[] logo)
         {
-            _service.DeleteSchool(_service.GetSchool(id));
-            return Ok();
+            try
+            {
+                var school = new School
+                {
+                    Name = name,
+                    Description = description,
+                    Logo = logo
+                };
+
+                _service.InsertSchool(school);
+
+                return CreatedAtRoute("DefaultApi", new { id = school.Id }, school);
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> Delete(int id)
+        {
+            try
+            {
+                _service.DeleteSchool(await _service.GetSchoolAsync(id));
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPut]
-        public IHttpActionResult Update(int id, string name, string description, byte[] logo)
+        public async Task<IHttpActionResult> Update(int id, string name, string description, byte[] logo)
         {
-            var school = _service.GetSchool(id);
-
-            if (school is null)
+            try
             {
-                return NotFound();
-            }
+                var school = await _service.GetSchoolAsync(id);
 
-            school.Name = name;
-            school.Description = description;
-            school.Logo = logo;
-            _service.UpdateSchool(school);
-            return Ok();
+                if (school is null)
+                {
+                    return NotFound();
+                }
+
+                school.Name = name;
+                school.Description = description;
+                school.Logo = logo;
+                _service.UpdateSchool(school);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
     }
 }

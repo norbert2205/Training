@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using MySql.Data.EntityFramework;
 using Training.Models;
 
@@ -34,6 +35,11 @@ namespace Training.Data
         public new IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
             return base.Set<TEntity>();
+        }
+
+        public new async Task SaveChangesAsync()
+        {
+            await base.SaveChangesAsync();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
 
@@ -13,19 +15,21 @@ namespace Training.Services
             _courseRepository = courseRepository;
         }
 
-        public IQueryable<Course> GetCourses()
+        public async Task<IEnumerable<Course>> GetCoursesAsync()
         {
-            return _courseRepository.Table;
+            return await _courseRepository.GetAll
+                .ToListAsync();
         }
 
-        public Course GetCourse(int id)
+        public async Task<Course> GetCourseAsync(int id)
         {
-            return _courseRepository.GetById(id);
+            return await _courseRepository.GetById(id)
+                .FirstOrDefaultAsync();
         }
 
-        public void InsertCourse(Course course)
+        public void CreateCourse(Course course)
         {
-            _courseRepository.Insert(course);
+            _courseRepository.Create(course);
         }
 
         public void UpdateCourse(Course course)

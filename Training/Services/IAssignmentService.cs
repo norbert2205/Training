@@ -1,14 +1,19 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Training.Models;
 
 namespace Training.Services
 {
     public interface IAssignmentService
     {
-        IQueryable<Assignment> GetAssignments();
-        Assignment GetAssignment(int id);
-        void InsertAssignment(Assignment assignment);
+        Task<IEnumerable<Assignment>> GetAssignmentsAsync();
+
+        Task<Assignment> GetAssignmentAsync(int id);
+
+        void CreateAssignment(Assignment assignment);
+
         void UpdateAssignment(Assignment assignment);
+
         void DeleteAssignment(Assignment assignment);
     }
 }

@@ -1,14 +1,19 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Training.Models;
 
 namespace Training.Services
 {
     public interface IUserService
     {
-        IQueryable<User> GetUsers();
-        User GetUser(int id);
-        void InsertUser(User user);
+        Task<IEnumerable<User>> GetUsersAsync();
+
+        Task<User> GetUserAsync(int id);
+
+        void CreateUser(User user);
+
         void UpdateUser(User user);
+
         void DeleteUser(User user);
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
 
@@ -13,19 +16,21 @@ namespace Training.Services
             _schoolRepository = schoolRepository;
         }
 
-        public IQueryable<School> GetSchools()
+        public async Task<IEnumerable<School>> GetSchoolsAsync()
         {
-            return _schoolRepository.Table;
+            return await _schoolRepository.GetAll
+                .ToListAsync();
         }
 
-        public School GetSchool(int id)
+        public async Task<School> GetSchoolAsync(int id)
         {
-            return _schoolRepository.GetById(id);
+            return await _schoolRepository.GetById(id)
+                .FirstOrDefaultAsync();
         }
 
         public void InsertSchool(School school)
         {
-            _schoolRepository.Insert(school);
+            _schoolRepository.Create(school);
         }
 
         public void UpdateSchool(School school)

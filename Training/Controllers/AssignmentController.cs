@@ -1,4 +1,8 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http;
 using Training.Models;
 using Training.Services;
 
@@ -15,72 +19,113 @@ namespace Training.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetAll()
+        public async Task<IHttpActionResult> Get(int id, CancellationToken token)
         {
-            var item = _service.GetAssignments();
-
-            if (item == null)
+            try
             {
-                return NotFound();
+                var item = await _service.GetAssignmentAsync(id);
+
+                if (item == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(item);
             }
-
-            return Ok(item);
-        }
-
-        [HttpGet]
-        public IHttpActionResult Get(int id)
-        {
-            var item = _service.GetAssignment(id);
-
-            if (item == null)
+            catch (Exception e)
             {
-                return NotFound();
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
             }
-
-            return Ok(item);
         }
 
         [HttpPost]
-        public IHttpActionResult Create(string name, string question, string answer, string correctAnswer, int grade)
+        public async Task<IHttpActionResult> Create(string name, string question, string answer, string correctAnswer, int grade, CancellationToken token)
         {
-            var assignment = new Assignment
+            try
             {
-                Name = name,
-                Question = question,
-                Answer = answer,
-                CorrectAnswer = correctAnswer,
-                Grade = grade
-            };
+                var assignment = new Assignment
+                {
+                    Name = name,
+                    Question = question,
+                    Answer = answer,
+                    CorrectAnswer = correctAnswer,
+                    Grade = grade
+                };
 
-            _service.InsertAssignment(assignment);
+                _service.CreateAssignment(assignment);
 
-            return CreatedAtRoute("DefaultApi", new { id = assignment.Id }, assignment);
+                return CreatedAtRoute("DefaultApi", new { id = assignment.Id }, assignment);
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPost]
-        public IHttpActionResult Delete(int id)
+        public async Task<IHttpActionResult> Delete(int id, CancellationToken token)
         {
-            _service.DeleteAssignment(_service.GetAssignment(id));
-            return Ok();
+            try
+            {
+                _service.DeleteAssignment(await _service.GetAssignmentAsync(id));
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpPut]
-        public IHttpActionResult Update(int id, string name, string question, string answer, string correctAnswer, int grade)
+        public async Task<IHttpActionResult> Update(int id, string name, string question, string answer, string correctAnswer, int grade,
+            CancellationToken token)
         {
-            var assignment = _service.GetAssignment(id);
-
-            if (assignment is null)
+            try
             {
-                return NotFound();
-            }
+                var assignment = await _service.GetAssignmentAsync(id);
 
-            assignment.Name = name;
-            assignment.Question = question;
-            assignment.Answer = answer;
-            assignment.CorrectAnswer = correctAnswer;
-            assignment.Grade = grade;
-            _service.UpdateAssignment(assignment);
-            return Ok();
+                if (assignment is null)
+                {
+                    return NotFound();
+                }
+
+                assignment.Name = name;
+                assignment.Question = question;
+                assignment.Answer = answer;
+                assignment.CorrectAnswer = correctAnswer;
+                assignment.Grade = grade;
+                _service.UpdateAssignment(assignment);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetAll(CancellationToken token)
+        {
+            try
+            {
+                var item = await _service.GetAssignmentsAsync();
+
+                if (item == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(item);
+            }
+            catch (Exception e)
+            {
+                // logError
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
     }
 }
