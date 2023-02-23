@@ -13,6 +13,10 @@ namespace Training
     {
         public static void Bootstrap(HttpConfiguration config)
         {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.AppSettings()
+                .CreateLogger();
+
             var container = new Container(_ => _
                     .WithoutThrowOnRegisteringDisposableTransient())
                     .WithWebApi(config);

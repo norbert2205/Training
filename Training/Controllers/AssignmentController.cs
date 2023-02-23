@@ -26,7 +26,6 @@ namespace Training.Controllers
         {
             try
             {
-                throw new Exception("test");
                 var item = await _service.GetAssignmentAsync(id);
 
                 if (item == null)
