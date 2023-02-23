@@ -23,23 +23,23 @@ namespace Training.Services
 
         public async Task<User> GetUserAsync(int id)
         {
-            return await _userRepository.GetById(id)
-                .FirstOrDefaultAsync();
+            //TODO to async
+            return _userRepository.GetById(id);
         }
 
-        public void CreateUser(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
-            _userRepository.Create(user);
+            return await _userRepository.CreateAsync(user);
         }
 
-        public void UpdateUser(User user)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            _userRepository.Update(user);
+            return await _userRepository.UpdateAsync(user);
         }
 
-        public void DeleteUser(User user)
+        public async Task<int> DeleteUserAsync(User user)
         {
-            _userRepository.Delete(user);
+            return await _userRepository.DeleteAsync(user);
         }
     }
 }

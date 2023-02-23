@@ -2,19 +2,24 @@
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Training.Data
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly ISchoolDbContext _ctx;
+        private IDbSet<T> _entities;
 
         public Repository(ISchoolDbContext ctx)
         {
             _ctx = ctx;
         }
 
-        public void Create(T entity)
+        protected IDbSet<T> Entities => _entities ?? (_entities = _ctx.Set<T>());
+
+        public async Task<T> CreateAsync(T entity)
         {
             try
             {
@@ -22,8 +27,10 @@ namespace Training.Data
                 {
                     throw new ArgumentNullException(nameof(entity));
                 }
-                _ctx.Set<T>().Add(entity);
-                _ctx.SaveChangesAsync();
+                Entities.Add(entity);
+                await _ctx.SaveChangesAsync();
+
+                return entity;
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -42,7 +49,7 @@ namespace Training.Data
             }
         }
 
-        public void Update(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             try
             {
@@ -50,7 +57,15 @@ namespace Training.Data
                 {
                     throw new ArgumentNullException(nameof(entity));
                 }
-                _ctx.SaveChangesAsync();
+
+                var exist = GetById(entity.Id);
+
+                if (exist != null)
+                {
+                    _ctx.Entry(exist).CurrentValues.SetValues(entity);
+                    await _ctx.SaveChangesAsync();
+                }
+                return exist;
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -67,7 +82,7 @@ namespace Training.Data
             }
         }
 
-        public void Delete(T entity)
+        public async Task<int> DeleteAsync(T entity)
         {
             try
             {
@@ -75,8 +90,9 @@ namespace Training.Data
                 {
                     throw new ArgumentNullException(nameof(entity));
                 }
-                _ctx.Set<T>().Remove(entity);
-                _ctx.SaveChangesAsync();
+
+                Entities.Remove(entity);
+                return await _ctx.SaveChangesAsync();
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -94,11 +110,16 @@ namespace Training.Data
             }
         }
 
-        public IQueryable<T> GetById(int id)
+        public T GetById(int id)
         {
-            return _ctx.Set<T>().Where(_ => _.Id == id).AsNoTracking();
+            return Entities.Find(id);
         }
 
-        public IQueryable<T> GetAll => _ctx.Set<T>().AsNoTracking();
+        public async Task<T> FindAsync(Expression<Func<T, bool>> match)
+        {
+            return await _ctx.Set<T>().SingleOrDefaultAsync(match);
+        }
+
+        public IQueryable<T> GetAll => Entities;
     }
 }

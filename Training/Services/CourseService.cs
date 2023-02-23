@@ -23,23 +23,23 @@ namespace Training.Services
 
         public async Task<Course> GetCourseAsync(int id)
         {
-            return await _courseRepository.GetById(id)
-                .FirstOrDefaultAsync();
+            //TODO to async
+            return _courseRepository.GetById(id);
         }
 
-        public void CreateCourse(Course course)
+        public async Task<Course> CreateCourseAsync(Course course)
         {
-            _courseRepository.Create(course);
+            return await _courseRepository.CreateAsync(course);
         }
 
-        public void UpdateCourse(Course course)
+        public async Task<Course> UpdateCourseAsync(Course course)
         {
-            _courseRepository.Update(course);
+            return await _courseRepository.UpdateAsync(course);
         }
 
-        public void DeleteCourse(Course course)
+        public async Task<int> DeleteCourseAsync(Course course)
         {
-            _courseRepository.Delete(course);
+            return await _courseRepository.DeleteAsync(course);
         }
     }
 }

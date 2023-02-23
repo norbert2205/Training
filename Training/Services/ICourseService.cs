@@ -10,10 +10,10 @@ namespace Training.Services
 
         Task<Course> GetCourseAsync(int id);
 
-        void CreateCourse(Course course);
+        Task<Course> CreateCourseAsync(Course course);
 
-        void UpdateCourse(Course course);
+        Task<Course> UpdateCourseAsync(Course course);
 
-        void DeleteCourse(Course course);
+        Task<int> DeleteCourseAsync(Course course);
     }
 }

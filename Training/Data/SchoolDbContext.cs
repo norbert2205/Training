@@ -1,10 +1,12 @@
-﻿using System;
+﻿using MySql.Data.EntityFramework;
+using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
-using MySql.Data.EntityFramework;
 using Training.Models;
 
 namespace Training.Data
@@ -37,9 +39,36 @@ namespace Training.Data
             return base.Set<TEntity>();
         }
 
-        public new async Task SaveChangesAsync()
+        public new DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : BaseEntity
         {
-            await base.SaveChangesAsync();
+            return base.Entry(entity);
+        }
+
+        public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            TrackChanges();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void TrackChanges()
+        {
+            var entityEntries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+            foreach (var entityEntry in entityEntries)
+            {
+                if (entityEntry.Property("CreatedAt") != null)
+                {
+                    if (entityEntry.State == EntityState.Added)
+                    {
+                        entityEntry.Property("CreatedAt").CurrentValue = DateTime.UtcNow;
+                    }
+                }
+
+                if (entityEntry.Property("ModifiedAt") != null)
+                {
+                    entityEntry.Property("ModifiedAt").CurrentValue = DateTime.UtcNow;
+                }
+            }
         }
     }
 }

@@ -10,10 +10,10 @@ namespace Training.Services
 
         Task<School> GetSchoolAsync(int id);
 
-        void InsertSchool(School school);
+        Task<School> CreateSchoolAsync(School school);
 
-        void UpdateSchool(School school);
+        Task<int> DeleteSchoolAsync(School school);
 
-        void DeleteSchool(School school);
+        Task<School> UpdateSchoolAsync(School school);
     }
 }

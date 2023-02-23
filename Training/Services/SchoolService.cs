@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
@@ -24,23 +23,23 @@ namespace Training.Services
 
         public async Task<School> GetSchoolAsync(int id)
         {
-            return await _schoolRepository.GetById(id)
-                .FirstOrDefaultAsync();
+            //TODO to async
+            return _schoolRepository.GetById(id);
         }
 
-        public void InsertSchool(School school)
+        public async Task<School> CreateSchoolAsync(School school)
         {
-            _schoolRepository.Create(school);
+            return await _schoolRepository.CreateAsync(school);
         }
 
-        public void UpdateSchool(School school)
+        public async Task<School> UpdateSchoolAsync(School school)
         {
-            _schoolRepository.Update(school);
+            return await _schoolRepository.UpdateAsync(school);
         }
 
-        public void DeleteSchool(School school)
+        public async Task<int> DeleteSchoolAsync(School school)
         {
-            _schoolRepository.Delete(school);
+            return await _schoolRepository.DeleteAsync(school);
         }
     }
 }

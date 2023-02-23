@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
+using Training.Models;
 
 namespace Training.Controllers
 {
@@ -11,8 +12,8 @@ namespace Training.Controllers
 
         Task<IHttpActionResult> Delete(int id);
 
-        Task<IHttpActionResult> Update(int id, string name);
-
         Task<IHttpActionResult> GetAll();
+
+        Task<IHttpActionResult> Update([FromBody] Course newCourse);
     }
 }

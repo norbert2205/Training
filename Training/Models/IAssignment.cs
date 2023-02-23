@@ -13,6 +13,7 @@ namespace Training.Models
         string CorrectAnswer { get; set; }
 
         int Grade { get; set; }
+
         ICollection<User> Users { get; set; }
     }
 }

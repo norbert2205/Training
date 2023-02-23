@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using Microsoft.Owin.Security.OAuth;
+using System.Web.Http;
+using Training.Helpers;
 
 namespace Training
 {
@@ -7,6 +9,12 @@ namespace Training
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            config.MessageHandlers.Add(new TokenValidationHandler());
+
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
             Bootstrapper.Bootstrap(config);
 
             // Web API routes
@@ -17,9 +25,6 @@ namespace Training
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
-            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
-                = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         }
     }
 }

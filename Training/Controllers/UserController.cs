@@ -9,6 +9,7 @@ using Type = Training.Models.Type;
 
 namespace Training.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/[controller]")]
     public class UserController : ApiController, IUserController
     {
@@ -90,7 +91,7 @@ namespace Training.Controllers
                     Type = type
                 };
 
-                _service.CreateUser(user);
+                await _service.CreateUserAsync(user);
 
                 return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
@@ -106,7 +107,7 @@ namespace Training.Controllers
         {
             try
             {
-                _service.DeleteUser(await _service.GetUserAsync(id));
+                await _service.DeleteUserAsync(await _service.GetUserAsync(id));
                 return Ok();
             }
             catch (Exception e)
@@ -117,23 +118,11 @@ namespace Training.Controllers
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> Update(int id, string firstName, string lastName, string phoneNumber, Type type, CancellationToken token)
+        public async Task<IHttpActionResult> Update([FromBody] User newUser)
         {
             try
             {
-                var user = await _service.GetUserAsync(id);
-
-                if (user is null)
-                {
-                    return NotFound();
-                }
-
-                user.FirstName = firstName;
-                user.LastName = lastName;
-                user.PhoneNumber = phoneNumber;
-                user.Type = type;
-
-                _service.UpdateUser(user);
+                await _service.UpdateUserAsync(newUser);
                 return Ok();
             }
             catch (Exception e)

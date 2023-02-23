@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ namespace Training.Controllers
     public class AssignmentController : ApiController, IAssignmentController
     {
         private readonly IAssignmentService _service;
+        private readonly ILogger _logger;
 
-        public AssignmentController(IAssignmentService service)
+        public AssignmentController(IAssignmentService service, ILogger logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -34,7 +37,8 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                //TODO configure file sink
+                _logger.Error(e, "log_text");
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -53,7 +57,7 @@ namespace Training.Controllers
                     Grade = grade
                 };
 
-                _service.CreateAssignment(assignment);
+                await _service.CreateAssignmentAsync(assignment);
 
                 return CreatedAtRoute("DefaultApi", new { id = assignment.Id }, assignment);
             }
@@ -69,7 +73,7 @@ namespace Training.Controllers
         {
             try
             {
-                _service.DeleteAssignment(await _service.GetAssignmentAsync(id));
+                await _service.DeleteAssignmentAsync(await _service.GetAssignmentAsync(id));
                 return Ok();
             }
             catch (Exception e)
@@ -80,24 +84,11 @@ namespace Training.Controllers
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> Update(int id, string name, string question, string answer, string correctAnswer, int grade,
-            CancellationToken token)
+        public async Task<IHttpActionResult> Update([FromBody] Assignment newAssignment)
         {
             try
             {
-                var assignment = await _service.GetAssignmentAsync(id);
-
-                if (assignment is null)
-                {
-                    return NotFound();
-                }
-
-                assignment.Name = name;
-                assignment.Question = question;
-                assignment.Answer = answer;
-                assignment.CorrectAnswer = correctAnswer;
-                assignment.Grade = grade;
-                _service.UpdateAssignment(assignment);
+                await _service.UpdateAssignmentAsync(newAssignment);
                 return Ok();
             }
             catch (Exception e)

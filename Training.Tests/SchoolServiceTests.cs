@@ -1,6 +1,7 @@
-﻿using System.Data.Entity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System.Data.Entity;
+using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
 
@@ -10,7 +11,7 @@ namespace Training.Tests
     public class SchoolServiceTests
     {
         [TestMethod]
-        public void Given_School_When_Insert_Then_CreateSchool()
+        public async Task Given_School_When_CreateAsync_Then_CreateSchool()
         {
             var dbSet = Substitute.For<DbSet<School>>();
             var ctx = Substitute.For<ISchoolDbContext>();
@@ -19,10 +20,10 @@ namespace Training.Tests
                 .Returns(new School ());
 
             var service = new Repository<School>(ctx);
-            service.Create(new School());
+            await service.CreateAsync(new School());
 
             dbSet.Received(1).Add(Arg.Any<School>());
-            ctx.Received(1).SaveChangesAsync();
+            await ctx.Received(1).SaveChangesAsync();
         }
     }
 }

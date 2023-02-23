@@ -10,10 +10,10 @@ namespace Training.Services
 
         Task<User> GetUserAsync(int id);
 
-        void CreateUser(User user);
+        Task<User> CreateUserAsync(User user);
 
-        void UpdateUser(User user);
+        Task<User> UpdateUserAsync(User user);
 
-        void DeleteUser(User user);
+        Task<int> DeleteUserAsync(User user);
     }
 }

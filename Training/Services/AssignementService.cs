@@ -8,38 +8,38 @@ namespace Training.Services
 {
     public class AssignmentService : IAssignmentService
     {
-        private readonly IRepository<Assignment> _assignmentRepository;
+        private readonly IRepository<Assignment> _repository;
 
-        public AssignmentService(IRepository<Assignment> assignmentRepository)
+        public AssignmentService(IRepository<Assignment> repository)
         {
-            _assignmentRepository = assignmentRepository;
+            _repository = repository;
         }
 
         public async Task<IEnumerable<Assignment>> GetAssignmentsAsync()
         {
-            return await _assignmentRepository.GetAll
+            return await _repository.GetAll
                 .ToListAsync();
         }
 
         public async Task<Assignment> GetAssignmentAsync(int id)
         {
-            return await _assignmentRepository.GetById(id)
-                .FirstOrDefaultAsync();
+            //TODO to async
+            return _repository.GetById(id);
         }
 
-        public void CreateAssignment(Assignment assignment)
+        public async Task<Assignment> CreateAssignmentAsync(Assignment assignment)
         {
-            _assignmentRepository.Create(assignment);
+            return await _repository.CreateAsync(assignment);
         }
 
-        public void UpdateAssignment(Assignment assignment)
+        public async Task<Assignment> UpdateAssignmentAsync(Assignment assignment)
         {
-            _assignmentRepository.Update(assignment);
+            return await _repository.UpdateAsync(assignment);
         }
 
-        public void DeleteAssignment(Assignment assignment)
+        public async Task<int> DeleteAssignmentAsync(Assignment assignment)
         {
-            _assignmentRepository.Delete(assignment);
+            return await _repository.DeleteAsync(assignment);
         }
     }
 }

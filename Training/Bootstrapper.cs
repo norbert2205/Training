@@ -1,6 +1,7 @@
-using System.Web.Http;
 using DryIoc;
 using DryIoc.WebApi;
+using Serilog;
+using System.Web.Http;
 using Training.Controllers;
 using Training.Data;
 using Training.Models;
@@ -16,9 +17,9 @@ namespace Training
                     .WithoutThrowOnRegisteringDisposableTransient())
                     .WithWebApi(config);
 
-            // container.Register<ISchoolDbContext>(
-            //     Made.Of(() => new DbContext(nameof(School))),
-            //     reuse: Reuse.InCurrentScope);
+            container.Register(
+                Made.Of(() => Log.ForContext(Arg.Index<System.Type>(0)), r => r.Parent.ImplementationType),
+                setup: Setup.With(condition: r => r.Parent.ImplementationType != null));
 
             container.Register<ISchoolDbContext, SchoolDbContext>();
             container.Register(typeof(IRepository<>), typeof(Repository<>));
@@ -31,9 +32,10 @@ namespace Training
             container.Register<IUser, User>();
             container.Register<IUserService, UserService>();
             container.Register<IUserController, UserController>();
-            container.Register<IAssignment,Assignment>();
+            container.Register<IAssignment, Assignment>();
             container.Register<IAssignmentService, AssignmentService>();
             container.Register<IAssignmentController, AssignmentController>();
+            container.Register<IAccountService, AccountService>();
 
             config.DependencyResolver = new DryIocDependencyResolver(container);
 

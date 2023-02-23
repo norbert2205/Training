@@ -11,7 +11,7 @@ namespace Training.Controllers
 
         Task<IHttpActionResult> Delete(int id, CancellationToken token);
 
-        Task<IHttpActionResult> Update(int id, string firstName, string lastName, string phoneNumber, Type type, CancellationToken token);
+        Task<IHttpActionResult> Update([FromBody] User newUser);
 
         Task<IHttpActionResult> Get(int id, CancellationToken token);
 

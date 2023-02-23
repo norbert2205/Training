@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Training.Data
@@ -8,6 +10,8 @@ namespace Training.Data
     {
         IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity;
 
-        Task SaveChangesAsync();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken());
+
+        DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : BaseEntity;
     }
 }

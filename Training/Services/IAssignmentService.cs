@@ -10,10 +10,10 @@ namespace Training.Services
 
         Task<Assignment> GetAssignmentAsync(int id);
 
-        void CreateAssignment(Assignment assignment);
+        Task<Assignment> CreateAssignmentAsync(Assignment assignment);
 
-        void UpdateAssignment(Assignment assignment);
+        Task<Assignment> UpdateAssignmentAsync(Assignment assignment);
 
-        void DeleteAssignment(Assignment assignment);
+        Task<int> DeleteAssignmentAsync(Assignment assignment);
     }
 }

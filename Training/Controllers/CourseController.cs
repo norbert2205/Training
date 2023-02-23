@@ -1,5 +1,5 @@
-﻿using System.Net;
-using System;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Training.Models;
@@ -69,7 +69,7 @@ namespace Training.Controllers
                     Name = name
                 };
 
-                _service.CreateCourse(course);
+                await _service.CreateCourseAsync(course);
 
                 return CreatedAtRoute("DefaultApi", new { id = course.Id }, course);
             }
@@ -85,7 +85,7 @@ namespace Training.Controllers
         {
             try
             {
-                _service.DeleteCourse(await _service.GetCourseAsync(id));
+                await _service.DeleteCourseAsync(await _service.GetCourseAsync(id));
                 return Ok();
             }
             catch (Exception e)
@@ -96,19 +96,11 @@ namespace Training.Controllers
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> Update(int id, string name)
+        public async Task<IHttpActionResult> Update([FromBody] Course newCourse)
         {
             try
             {
-                var course = await _service.GetCourseAsync(id);
-
-                if (course is null)
-                {
-                    return NotFound();
-                }
-
-                course.Name = name;
-                _service.UpdateCourse(course);
+                await _service.UpdateCourseAsync(newCourse);
                 return Ok();
             }
             catch (Exception e)

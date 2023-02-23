@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Training.Models;
 
 namespace Training.Controllers
 {
@@ -12,8 +13,8 @@ namespace Training.Controllers
 
         Task<IHttpActionResult> Delete(int id, CancellationToken token);
 
-        Task<IHttpActionResult> Update(int id, string name, string question, string answer, string correctAnswer, int grade, CancellationToken token);
-
         Task<IHttpActionResult> GetAll(CancellationToken token);
+
+        Task<IHttpActionResult> Update([FromBody] Assignment newAssignment);
     }
 }
