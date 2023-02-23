@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Serilog;
 using Training.Models;
 using Training.Services;
 
@@ -11,10 +12,12 @@ namespace Training.Controllers
     public class SchoolController : ApiController, ISchoolController
     {
         private readonly ISchoolService _service;
+        private readonly ILogger _logger;
 
-        public SchoolController(ISchoolService service)
+        public SchoolController(ISchoolService service, ILogger logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -33,11 +36,11 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
-        }        
-        
+        }
+
         [HttpGet]
         public async Task<IHttpActionResult> Get(int id)
         {
@@ -54,7 +57,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -77,7 +80,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -92,7 +95,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -107,7 +110,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }

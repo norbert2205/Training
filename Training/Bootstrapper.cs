@@ -15,6 +15,7 @@ namespace Training
         {
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.AppSettings()
+                .Enrich.FromLogContext()
                 .CreateLogger();
 
             var container = new Container(_ => _

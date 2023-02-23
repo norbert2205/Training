@@ -37,8 +37,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                //TODO configure file sink
-                _logger.Error(e, "log_text");
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -63,7 +62,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -78,7 +77,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -93,7 +92,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -114,7 +113,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }

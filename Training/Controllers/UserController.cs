@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Serilog;
 using Training.Models;
 using Training.Services;
 using Type = Training.Models.Type;
@@ -14,10 +15,12 @@ namespace Training.Controllers
     public class UserController : ApiController, IUserController
     {
         private readonly IUserService _service;
+        private readonly ILogger _logger;
 
-        public UserController(IUserService service)
+        public UserController(IUserService service, ILogger logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -36,7 +39,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
 
@@ -60,7 +63,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -97,7 +100,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -112,7 +115,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -127,7 +130,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }

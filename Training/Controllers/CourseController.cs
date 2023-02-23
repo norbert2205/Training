@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Serilog;
 using Training.Models;
 using Training.Services;
 
@@ -11,10 +12,12 @@ namespace Training.Controllers
     public class CourseController : ApiController, ICourseController
     {
         private readonly ICourseService _service;
+        private readonly ILogger _logger;
 
-        public CourseController(ICourseService service)
+        public CourseController(ICourseService service, ILogger logger)
         {
             _service = service;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -33,7 +36,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -54,7 +57,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -75,7 +78,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -90,7 +93,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
@@ -105,7 +108,7 @@ namespace Training.Controllers
             }
             catch (Exception e)
             {
-                // logError
+                _logger.Error(e, string.Empty);
                 return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
