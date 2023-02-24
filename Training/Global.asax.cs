@@ -6,7 +6,6 @@ namespace Training
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }
 }

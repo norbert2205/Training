@@ -1,6 +1,6 @@
 ﻿using Microsoft.Owin.Security.OAuth;
 using System.Web.Http;
-using Training.Helpers;
+// using Training.Helpers;
 
 namespace Training
 {
@@ -9,9 +9,9 @@ namespace Training
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-            config.MessageHandlers.Add(new TokenValidationHandler());
+            // config.SuppressDefaultHostAuthentication();
+            // config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            // config.MessageHandlers.Add(new TokenValidationHandler());
 
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 

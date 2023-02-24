@@ -188,8 +188,6 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Configurations\RefreshTokenConfiguration.cs" />
-    <Compile Include="Configurations\LoginResponseConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\IAssignmentController.cs" />
     <Compile Include="Controllers\ICourseController.cs" />
@@ -208,7 +206,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\TokenValidationHandler.cs" />
     <Compile Include="Migrations\202302151003172_init.cs" />
     <Compile Include="Migrations\202302151003172_init.designer.cs">
       <DependentUpon>202302151003172_init.cs</DependentUpon>
@@ -245,6 +242,10 @@
     <Compile Include="Migrations\202302221329218_typeChanged.designer.cs">
       <DependentUpon>202302221329218_typeChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202302241029347_jwtChanges.cs" />
+    <Compile Include="Migrations\202302241029347_jwtChanges.designer.cs">
+      <DependentUpon>202302241029347_jwtChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Course.cs" />
@@ -253,8 +254,6 @@
     <Compile Include="Models\ISchool.cs" />
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\LoginRequest.cs" />
-    <Compile Include="Models\LoginResponse.cs" />
-    <Compile Include="Models\RefreshToken.cs" />
     <Compile Include="Models\School.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\User.cs" />
@@ -285,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Authorization\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202302151003172_init.resx">
@@ -313,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202302221329218_typeChanged.resx">
       <DependentUpon>202302221329218_typeChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302241029347_jwtChanges.resx">
+      <DependentUpon>202302241029347_jwtChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
