@@ -1,19 +1,17 @@
-﻿using System;
+﻿using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using Serilog;
+using System;
 using System.IO;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Newtonsoft.Json;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using Serilog;
 using Training.Models;
 using Training.Services;
 using Type = Training.Models.Type;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace Training.Controllers
 {
