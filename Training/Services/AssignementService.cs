@@ -23,8 +23,7 @@ namespace Training.Services
 
         public async Task<Assignment> GetAssignmentAsync(int id)
         {
-            //TODO to async
-            return _repository.GetById(id);
+            return await _repository.FindAsync(_ => _.Id == id);
         }
 
         public async Task<Assignment> CreateAssignmentAsync(Assignment assignment)

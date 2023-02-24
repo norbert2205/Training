@@ -252,6 +252,10 @@
     <Compile Include="Migrations\202302241029347_jwtChanges.designer.cs">
       <DependentUpon>202302241029347_jwtChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202302241411163_register.cs" />
+    <Compile Include="Migrations\202302241411163_register.designer.cs">
+      <DependentUpon>202302241411163_register.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Course.cs" />
@@ -260,6 +264,7 @@
     <Compile Include="Models\ISchool.cs" />
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\LoginRequest.cs" />
+    <Compile Include="Models\RegisterRequest.cs" />
     <Compile Include="Models\School.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\User.cs" />
@@ -267,8 +272,6 @@
     <Compile Include="Data\SchoolDbContext.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\Repository.cs" />
-    <Compile Include="Services\AccountService.cs" />
-    <Compile Include="Services\IAccountService.cs" />
     <Compile Include="Services\IAssignmentService.cs" />
     <Compile Include="Services\ICourseService.cs" />
     <Compile Include="Services\ISchoolService.cs" />
@@ -322,6 +325,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202302241029347_jwtChanges.resx">
       <DependentUpon>202302241029347_jwtChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302241411163_register.resx">
+      <DependentUpon>202302241411163_register.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

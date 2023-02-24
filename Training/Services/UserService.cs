@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
@@ -21,15 +23,20 @@ namespace Training.Services
                 .ToListAsync();
         }
 
-        public async Task<User> GetUserAsync(int id)
+        public async Task<User> GetSchoolAsync(int id)
         {
-            //TODO to async
-            return _userRepository.GetById(id);
+            return await _userRepository.FindAsync(_ => _.Id == id);
         }
 
         public async Task<User> CreateUserAsync(User user)
         {
             return await _userRepository.CreateAsync(user);
+        }
+
+        public async Task<bool> IsValidLoginAsync(LoginRequest loginRequest)
+        {
+            return await _userRepository.FindAsync(_ =>
+                _.Login == loginRequest.Login && _.Password == loginRequest.Password) != null;
         }
 
         public async Task<User> UpdateUserAsync(User user)
@@ -40,6 +47,11 @@ namespace Training.Services
         public async Task<int> DeleteUserAsync(User user)
         {
             return await _userRepository.DeleteAsync(user);
+        }
+
+        public async Task<User> FindUserAsync(Expression<Func<User, bool>> match)
+        {
+            return await _userRepository.FindAsync(match);
         }
     }
 }

@@ -4,45 +4,71 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Serilog;
 using Training.Models;
 using Training.Services;
+using System.Net;
 
 namespace Training.Controllers
 {
     [RoutePrefix("api/[controller]")]
     public class AccountController : ApiController
     {
-        private readonly IAccountService _accountService;
+        private readonly IUserService _userService;
+        private readonly ILogger _logger;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IUserService userService, ILogger logger)
         {
-            _accountService = accountService;
+            _userService = userService;
+            _logger = logger;
         }
 
         [HttpPost]
-        public IHttpActionResult Authenticate([FromBody] LoginRequest login)
+        public async Task<IHttpActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
-            var isUsernamePasswordValid = false;
-
-            if (login != null)
+            try
             {
-                // make await call to the Database to check username and password. here we only checking if password value is admin
-                isUsernamePasswordValid = login.Password == "admin";
+                if (await _userService.FindUserAsync(_ => _.Email == registerRequest.Email) != null)
+                {
+                    return BadRequest("User already exists");
+                }
+
+                var user = new User
+                {
+                    FirstName = registerRequest.FirstName,
+                    LastName = registerRequest.LastName,
+                    Email = registerRequest.Email,
+                    Login = registerRequest.Login,
+                    Password = registerRequest.Password
+                };
+
+                await _userService.CreateUserAsync(user);
+
+                return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
-            // if credentials are valid
-            if (isUsernamePasswordValid)
+            catch (Exception ex)
             {
-                var key = "jwt_signing_secret_key"; //Secret key which will be used later during validation    
-                var issuer = "http://localhost";
+                _logger.Error(ex, string.Empty);
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
 
+        [HttpPost]
+        public async Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            if (loginRequest != null && await _userService.IsValidLoginAsync(loginRequest))
+            {
+                var key = "jwt_signing_secret_key";
+                var issuer = "http://localhost";
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                 var permClaims = new List<Claim>
                 {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Name, login.User)
+                    new Claim(ClaimTypes.Name, loginRequest.Login)
                 };
 
                 var token = new JwtSecurityToken(issuer,
@@ -50,12 +76,10 @@ namespace Training.Controllers
                     permClaims,
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials: credentials);
-                
-                //return the token
+
                 return Ok(new JwtSecurityTokenHandler().WriteToken(token));
             }
 
-            // if username/password are not valid send unauthorized status code in response               
             return BadRequest("Username or Password Invalid!");
         }
     }

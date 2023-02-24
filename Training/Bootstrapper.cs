@@ -40,7 +40,6 @@ namespace Training
             container.Register<IAssignment, Assignment>();
             container.Register<IAssignmentService, AssignmentService>();
             container.Register<IAssignmentController, AssignmentController>();
-            container.Register<IAccountService, AccountService>();
 
             config.DependencyResolver = new DryIocDependencyResolver(container);
 

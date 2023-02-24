@@ -23,8 +23,7 @@ namespace Training.Services
 
         public async Task<Course> GetCourseAsync(int id)
         {
-            //TODO to async
-            return _courseRepository.GetById(id);
+            return await _courseRepository.FindAsync(_ => _.Id == id);
         }
 
         public async Task<Course> CreateCourseAsync(Course course)

@@ -11,6 +11,12 @@ namespace Training.Models
 
         public string PhoneNumber { get; set; }
 
+        public string Login { get; set; }
+
+        public string Password { get; set; }
+
+        public string Email { get; set; }
+
         public Type Type { get; set; }
 
         public ICollection<Course> Courses { get; set; } = new List<Course>();

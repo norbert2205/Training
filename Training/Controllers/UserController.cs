@@ -57,7 +57,7 @@ namespace Training.Controllers
         {
             try
             {
-                var item = await _service.GetUserAsync(id);
+                var item = await _service.FindUserAsync(_ => _.Id == id);
 
                 if (item == null)
                 {
@@ -115,7 +115,7 @@ namespace Training.Controllers
         {
             try
             {
-                await _service.DeleteUserAsync(await _service.GetUserAsync(id));
+                await _service.DeleteUserAsync(await _service.FindUserAsync(_ => _.Id == id));
                 return Ok();
             }
             catch (Exception e)
