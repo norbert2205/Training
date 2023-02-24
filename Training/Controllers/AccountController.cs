@@ -33,7 +33,7 @@ namespace Training.Controllers
             // if credentials are valid
             if (isUsernamePasswordValid)
             {
-                string key = "jwt_signing_secret_key"; //Secret key which will be used later during validation    
+                var key = "jwt_signing_secret_key"; //Secret key which will be used later during validation    
                 var issuer = "http://localhost";
 
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
