@@ -256,6 +256,10 @@
     <Compile Include="Migrations\202302241411163_register.designer.cs">
       <DependentUpon>202302241411163_register.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202302241455241_register1.cs" />
+    <Compile Include="Migrations\202302241455241_register1.designer.cs">
+      <DependentUpon>202302241455241_register1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Course.cs" />
@@ -328,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202302241411163_register.resx">
       <DependentUpon>202302241411163_register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302241455241_register1.resx">
+      <DependentUpon>202302241455241_register1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

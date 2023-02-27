@@ -40,7 +40,7 @@ namespace Training.Controllers
                     FirstName = registerRequest.FirstName,
                     LastName = registerRequest.LastName,
                     Email = registerRequest.Email,
-                    Login = registerRequest.Login,
+                    Username = registerRequest.Username,
                     Password = registerRequest.Password
                 };
 
@@ -68,7 +68,7 @@ namespace Training.Controllers
                 var permClaims = new List<Claim>
                 {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Name, loginRequest.Login)
+                    new Claim(ClaimTypes.Name, loginRequest.Username)
                 };
 
                 var token = new JwtSecurityToken(issuer,
@@ -81,6 +81,12 @@ namespace Training.Controllers
             }
 
             return BadRequest("Username or Password Invalid!");
+        }
+
+        [HttpGet]
+        public IHttpActionResult Test()
+        {
+            return Ok("test");
         }
     }
 }

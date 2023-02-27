@@ -36,7 +36,7 @@ namespace Training.Services
         public async Task<bool> IsValidLoginAsync(LoginRequest loginRequest)
         {
             return await _userRepository.FindAsync(_ =>
-                _.Login == loginRequest.Login && _.Password == loginRequest.Password) != null;
+                _.Username == loginRequest.Username && _.Password == loginRequest.Password) != null;
         }
 
         public async Task<User> UpdateUserAsync(User user)
