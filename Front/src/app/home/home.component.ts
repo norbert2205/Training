@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
 import { User } from '@app/_models';
 import { AccountService } from '@app/_services';
 import { environment } from '@environments/environment';
-import { map } from 'rxjs';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent {
@@ -23,7 +22,6 @@ export class HomeComponent {
             },
             responseType: "blob"
           })
-        // .pipe()
         .subscribe({
             next: _ => {
                 console.log("x", _);

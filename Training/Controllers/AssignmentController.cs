@@ -43,19 +43,10 @@ namespace Training.Controllers
         }
 
         [HttpPost]
-        public async Task<IHttpActionResult> Create(string name, string question, string answer, string correctAnswer, int grade, CancellationToken token)
+        public async Task<IHttpActionResult> Create([FromBody] Assignment assignment, CancellationToken token)
         {
             try
             {
-                var assignment = new Assignment
-                {
-                    Name = name,
-                    Question = question,
-                    Answer = answer,
-                    CorrectAnswer = correctAnswer,
-                    Grade = grade
-                };
-
                 await _service.CreateAssignmentAsync(assignment);
 
                 return CreatedAtRoute("DefaultApi", new { id = assignment.Id }, assignment);

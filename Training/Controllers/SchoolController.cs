@@ -63,17 +63,10 @@ namespace Training.Controllers
         }
 
         [HttpPost]
-        public async Task<IHttpActionResult> Create(string name, string description, byte[] logo)
+        public async Task<IHttpActionResult> Create(School school)
         {
             try
             {
-                var school = new School
-                {
-                    Name = name,
-                    Description = description,
-                    Logo = logo
-                };
-
                 await _service.CreateSchoolAsync(school);
 
                 return CreatedAtRoute("DefaultApi", new { id = school.Id }, school);

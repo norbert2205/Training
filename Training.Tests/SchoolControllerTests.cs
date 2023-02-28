@@ -13,10 +13,10 @@ namespace Training.Tests
     public class SchoolControllerTests
     {
         [TestMethod]
-        public void Given_NameAndDescription_When_CreateSchool_Then_Success()
+        public void Given_School_When_CreateSchool_Then_Success()
         {
             var controller = new SchoolController(Substitute.For<ISchoolService>(), Substitute.For<ILogger>());
-            var actionResult = controller.Create("name", "desc", new byte[1]);
+            var actionResult = controller.Create(new School());
             var createdResult = actionResult.Result as CreatedAtRouteNegotiatedContentResult<School>;
 
             createdResult.Should().NotBeNull();

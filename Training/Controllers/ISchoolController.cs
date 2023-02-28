@@ -8,7 +8,7 @@ namespace Training.Controllers
     {
         Task<IHttpActionResult> Get(int id);
 
-        Task<IHttpActionResult> Create(string name, string description, byte[] logo);
+        Task<IHttpActionResult> Create(School school);
 
         Task<IHttpActionResult> Delete(int id);
 

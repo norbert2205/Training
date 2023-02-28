@@ -135,23 +135,14 @@ namespace Training.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IHttpActionResult> Register([FromBody] RegisterRequest registerRequest)
+        public async Task<IHttpActionResult> Register([FromBody] User user)
         {
             try
             {
-                if (await _service.FindUserAsync(_ => _.Email == registerRequest.Email) != null)
+                if (await _service.FindUserAsync(_ => _.Email == user.Email) != null)
                 {
                     return BadRequest("User already exists");
                 }
-
-                var user = new User
-                {
-                    FirstName = registerRequest.FirstName,
-                    LastName = registerRequest.LastName,
-                    Email = registerRequest.Email,
-                    Username = registerRequest.Username,
-                    Password = registerRequest.Password
-                };
 
                 await _service.CreateUserAsync(user);
 

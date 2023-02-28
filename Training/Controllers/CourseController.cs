@@ -63,15 +63,10 @@ namespace Training.Controllers
         }
 
         [HttpPost]
-        public async Task<IHttpActionResult> Create(string name)
+        public async Task<IHttpActionResult> Create([FromBody] Course course)
         {
             try
             {
-                var course = new Course
-                {
-                    Name = name
-                };
-
                 await _service.CreateCourseAsync(course);
 
                 return CreatedAtRoute("DefaultApi", new { id = course.Id }, course);

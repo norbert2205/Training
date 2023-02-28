@@ -17,7 +17,7 @@ namespace Training.Controllers
 
         Task<IHttpActionResult> Update(int id, [FromBody] User newUser);
 
-        Task<IHttpActionResult> Register([FromBody] RegisterRequest registerRequest);
+        Task<IHttpActionResult> Register([FromBody] User user);
 
         Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest);
     }
