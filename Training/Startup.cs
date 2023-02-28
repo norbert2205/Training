@@ -24,7 +24,6 @@ namespace Training
             try
             {
                 var config = new HttpConfiguration();
-                throw new Exception("dupa");
                 Bootstrapper.Bootstrap(config);
                 WebApiConfig.Register(config);
 
