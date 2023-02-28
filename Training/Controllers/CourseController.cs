@@ -83,7 +83,7 @@ namespace Training.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id)
         {
             try

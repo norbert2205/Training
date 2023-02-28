@@ -194,7 +194,6 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\IAssignmentController.cs" />
     <Compile Include="Controllers\ICourseController.cs" />
     <Compile Include="Controllers\ISchoolController.cs" />
@@ -259,6 +258,10 @@
     <Compile Include="Migrations\202302241455241_register1.cs" />
     <Compile Include="Migrations\202302241455241_register1.designer.cs">
       <DependentUpon>202302241455241_register1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202302271328142_assignement_extend_with_course.cs" />
+    <Compile Include="Migrations\202302271328142_assignement_extend_with_course.designer.cs">
+      <DependentUpon>202302271328142_assignement_extend_with_course.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
@@ -335,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202302241455241_register1.resx">
       <DependentUpon>202302241455241_register1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302271328142_assignement_extend_with_course.resx">
+      <DependentUpon>202302271328142_assignement_extend_with_course.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

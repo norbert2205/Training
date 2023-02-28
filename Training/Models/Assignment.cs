@@ -15,6 +15,8 @@ namespace Training.Models
 
         public int Grade { get; set; }
 
+        public Course Course { get; set; }
+
         public ICollection<User> Users { get; set; } = new List<User>();
     }
 }

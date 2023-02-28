@@ -1,11 +1,16 @@
-﻿using PdfSharp.Drawing;
+﻿using Microsoft.IdentityModel.Tokens;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using Serilog;
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -78,19 +83,6 @@ namespace Training.Controllers
         {
             try
             {
-                // var assignment = new Assignment
-                // {
-                //     Question = "test?",
-                //     Answer = "test",
-                //     CorrectAnswer = "test2",
-                //     Grade = 2
-                // };
-                //
-                // var course = new Course
-                // {
-                //     Name = "testCourse"
-                // };
-
                 var user = new User
                 {
                     FirstName = firstName,
@@ -110,7 +102,7 @@ namespace Training.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id, CancellationToken token)
         {
             try
@@ -126,10 +118,11 @@ namespace Training.Controllers
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> Update([FromBody] User newUser)
+        public async Task<IHttpActionResult> Update(int id, [FromBody] User newUser)
         {
             try
             {
+                newUser.Id = id;
                 await _service.UpdateUserAsync(newUser);
                 return Ok();
             }
@@ -140,8 +133,73 @@ namespace Training.Controllers
             }
         }
 
+                [HttpPost]
+        public async Task<IHttpActionResult> Register([FromBody] RegisterRequest registerRequest)
+        {
+            try
+            {
+                if (await _service.FindUserAsync(_ => _.Email == registerRequest.Email) != null)
+                {
+                    return BadRequest("User already exists");
+                }
+
+                var user = new User
+                {
+                    FirstName = registerRequest.FirstName,
+                    LastName = registerRequest.LastName,
+                    Email = registerRequest.Email,
+                    Username = registerRequest.Username,
+                    Password = registerRequest.Password
+                };
+
+                await _service.CreateUserAsync(user);
+
+                return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, string.Empty);
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            if (loginRequest != null)
+            {
+                var user = await _service.FindUserAsync(_ =>
+                    _.Username == loginRequest.Username && _.Password == loginRequest.Password);
+
+                if (user != null)
+                {
+                    var key = "jwt_signing_secret_key";
+                    var issuer = "http://localhost";
+                    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+                    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+                    var permClaims = new List<Claim>
+                    {
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(ClaimTypes.Name, loginRequest.Username)
+                    };
+
+                    var token = new JwtSecurityToken(issuer,
+                        issuer,
+                        permClaims,
+                        expires: DateTime.Now.AddDays(1),
+                        signingCredentials: credentials);
+
+                    user.Token = new JwtSecurityTokenHandler().WriteToken(token);
+
+                    return Ok(user);
+                }
+            }
+
+            return BadRequest("Username or Password Invalid!");
+        }
+
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IHttpActionResult> CreatePdf(CancellationToken token)
         {
             var stream = await PreparePdf();
@@ -150,10 +208,10 @@ namespace Training.Controllers
                 Content = new ByteArrayContent(stream.GetBuffer())
             };
 
-            // result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            // {
-            //     FileName = "test.pdf"
-            // };
+            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "test.pdf"
+            };
 
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
             var response = ResponseMessage(result);

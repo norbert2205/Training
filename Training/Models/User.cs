@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Training.Data;
 
 namespace Training.Models
@@ -22,5 +23,8 @@ namespace Training.Models
         public ICollection<Course> Courses { get; set; } = new List<Course>();
 
         public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+
+        [NotMapped]
+        public string Token { get; set; }
     }
 }
