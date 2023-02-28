@@ -6,10 +6,7 @@ namespace Training
     {
         public static void Register(HttpConfiguration config)
         {
-            Bootstrapper.Bootstrap(config);
-
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

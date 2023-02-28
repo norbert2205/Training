@@ -188,7 +188,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -203,14 +202,12 @@
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Data\BaseEntity.cs" />
+    <Compile Include="Data\IBaseEntity.cs" />
     <Compile Include="Data\ISchoolDbContext.cs" />
     <Compile Include="Configurations\CourseConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
     <Compile Include="Configurations\AssignmentConfiguration.cs" />
     <Compile Include="Configurations\SchoolConfiguration.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202302151003172_init.cs" />
     <Compile Include="Migrations\202302151003172_init.designer.cs">
       <DependentUpon>202302151003172_init.cs</DependentUpon>
@@ -297,10 +294,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Authorization\" />
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202302151003172_init.resx">
       <DependentUpon>202302151003172_init.cs</DependentUpon>

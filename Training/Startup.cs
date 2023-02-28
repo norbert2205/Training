@@ -1,10 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using System;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Jwt;
 using Owin;
 using System.Text;
 using System.Web.Http;
+using Serilog;
 
 [assembly: OwinStartup(typeof(Training.Startup))]
 
@@ -14,23 +16,41 @@ namespace Training
     {
         public void Configuration(IAppBuilder appBuilder)
         {
-            var config = new HttpConfiguration();
-            WebApiConfig.Register(config);
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.AppSettings()
+                .Enrich.FromLogContext()
+                .CreateLogger();
 
-            appBuilder.UseJwtBearerAuthentication(new JwtBearerAuthenticationOptions
+            try
             {
-                AuthenticationMode = AuthenticationMode.Active,
-                TokenValidationParameters = new TokenValidationParameters()
+                var config = new HttpConfiguration();
+                throw new Exception("dupa");
+                Bootstrapper.Bootstrap(config);
+                WebApiConfig.Register(config);
+
+                appBuilder.UseJwtBearerAuthentication(new JwtBearerAuthenticationOptions
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = "http://localhost",
-                    ValidAudience = "http://localhost",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jwt_signing_secret_key"))
-                }
-            });
-            appBuilder.UseWebApi(config);
+                    AuthenticationMode = AuthenticationMode.Active,
+                    TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "http://localhost",
+                        ValidAudience = "http://localhost",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jwt_signing_secret_key"))
+                    }
+                });
+                appBuilder.UseWebApi(config);
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex, "INIT FAILED");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
     }
 }

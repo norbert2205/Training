@@ -31,7 +31,6 @@ export class AddEditComponent implements OnInit {
 
         this.title = 'Add Course';
         if (this.id) {
-            // edit mode
             this.title = 'Edit Course';
             this.loading = true;
             this.courseService.getById(this.id)
@@ -43,7 +42,6 @@ export class AddEditComponent implements OnInit {
         }
     }
 
-    // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
 
     onSubmit() {

@@ -1,6 +1,5 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-
 import { CourseService } from '@app/_services';
 
 @Component({ templateUrl: 'list.component.html' })

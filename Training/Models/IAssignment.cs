@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Training.Data;
 
 namespace Training.Models
 {
-    public interface IAssignment
+    public interface IAssignment : IBaseEntity
     {
         string Name { get; set; }
 

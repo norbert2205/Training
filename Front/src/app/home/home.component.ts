@@ -1,6 +1,5 @@
 ﻿import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-
 import { User } from '@app/_models';
 import { AccountService } from '@app/_services';
 import { environment } from '@environments/environment';

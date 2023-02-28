@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Training.Data
 {
-    public interface IRepository<T> where T : BaseEntity
+    public interface IRepository<T> where T : IBaseEntity
     {
         Task<T> CreateAsync(T entity);
 
