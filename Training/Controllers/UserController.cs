@@ -133,7 +133,8 @@ namespace Training.Controllers
             }
         }
 
-                [HttpPost]
+        [AllowAnonymous]
+        [HttpPost]
         public async Task<IHttpActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
             try
@@ -163,6 +164,7 @@ namespace Training.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest)
         {
