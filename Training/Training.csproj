@@ -258,6 +258,10 @@
     <Compile Include="Migrations\202302271328142_assignement_extend_with_course.designer.cs">
       <DependentUpon>202302271328142_assignement_extend_with_course.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202303011453418_assignment_rework.cs" />
+    <Compile Include="Migrations\202303011453418_assignment_rework.designer.cs">
+      <DependentUpon>202303011453418_assignment_rework.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Course.cs" />
@@ -332,6 +336,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202302271328142_assignement_extend_with_course.resx">
       <DependentUpon>202302271328142_assignement_extend_with_course.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202303011453418_assignment_rework.resx">
+      <DependentUpon>202303011453418_assignment_rework.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Training.Data;
+﻿using Training.Data;
 
 namespace Training.Models
 {
@@ -17,6 +16,6 @@ namespace Training.Models
 
         public Course Course { get; set; }
 
-        public ICollection<User> Users { get; set; } = new List<User>();
+        public User User { get; set; }
     }
 }
