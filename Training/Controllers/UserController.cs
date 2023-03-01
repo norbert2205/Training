@@ -180,7 +180,7 @@ namespace Training.Controllers
                     var token = new JwtSecurityToken(issuer,
                         issuer,
                         permClaims,
-                        expires: DateTime.Now.AddDays(1),
+                        expires: DateTime.Now.AddHours(1),
                         signingCredentials: credentials);
 
                     user.Token = new JwtSecurityTokenHandler().WriteToken(token);

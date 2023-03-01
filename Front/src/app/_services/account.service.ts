@@ -2,7 +2,7 @@
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
 
@@ -10,6 +10,7 @@ import { User } from '@app/_models';
 export class AccountService {
     private userSubject: BehaviorSubject<User | null>;
     public user: Observable<User | null>;
+    private authenticateTimeout?: NodeJS.Timeout;
 
     constructor(
         private router: Router,
@@ -30,16 +31,14 @@ export class AccountService {
         "Password": password
         })
             .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
                 this.userSubject.next(user);
+                this.startAuthenticateTimer();
                 return user;
             }));
     }
     
     logout() {
-        // remove user from local storage and set current user to null
-        localStorage.removeItem('user');
+        this.stopAuthenticateTimer();
         this.userSubject.next(null);
         this.router.navigate(['/account/login']);
     }
@@ -61,10 +60,7 @@ export class AccountService {
             .pipe(map(x => {
                 // update stored user if the logged in user updated their own record
                 if (id == this.userValue?.Id) {
-                    // update local storage
                     const user = { ...this.userValue, ...params };
-                    localStorage.setItem('user', JSON.stringify(user));
-
                     // publish updated user to subscribers
                     this.userSubject.next(user);
                 }
@@ -81,5 +77,23 @@ export class AccountService {
                 }
                 return x;
             }));
+    }
+
+    private startAuthenticateTimer() {
+        // parse json object from base64 encoded jwt token
+        const jwtBase64 = this.userValue!.Token!.split('.')[1];
+        const jwtToken = JSON.parse(atob(jwtBase64));
+
+        // set a timeout to re-authenticate with the api one minute before the token expires
+        const expires = new Date(jwtToken.exp * 1000);
+        const timeout = expires.getTime() - Date.now() - (60 * 1000);
+
+        this.authenticateTimeout = setTimeout(() => {
+            this.login(this.userValue!.Username!, this.userValue?.Password!).subscribe();
+        }, timeout);
+    }
+
+    private stopAuthenticateTimer() {
+        clearTimeout(this.authenticateTimeout);
     }
 }
