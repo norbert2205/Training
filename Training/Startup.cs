@@ -24,8 +24,8 @@ namespace Training
             try
             {
                 var config = new HttpConfiguration();
-                Bootstrapper.Bootstrap(config);
                 WebApiConfig.Register(config);
+                Bootstrapper.Bootstrap(config);
 
                 appBuilder.UseJwtBearerAuthentication(new JwtBearerAuthenticationOptions
                 {

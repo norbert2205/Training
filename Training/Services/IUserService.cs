@@ -20,7 +20,5 @@ namespace Training.Services
         Task<IEnumerable<User>> GetUsersAsync(CancellationToken token);
 
         Task<User> GetSchoolAsync(int id, CancellationToken token);
-
-        Task<bool> IsValidLoginAsync(LoginRequest loginRequest, CancellationToken token);
     }
 }

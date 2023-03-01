@@ -34,12 +34,6 @@ namespace Training.Services
             return await _userRepository.CreateAsync(user, token);
         }
 
-        public async Task<bool> IsValidLoginAsync(LoginRequest loginRequest, CancellationToken token)
-        {
-            return await _userRepository.FindAsync(_ =>
-                _.Username == loginRequest.Username && _.Password == loginRequest.Password, token) != null;
-        }
-
         public async Task<User> UpdateUserAsync(User user, CancellationToken token)
         {
             return await _userRepository.UpdateAsync(user, token);

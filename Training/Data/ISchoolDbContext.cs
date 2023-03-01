@@ -10,7 +10,7 @@ namespace Training.Data
     {
         IDbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity;
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken());
+        Task<int> SaveChangesAsync(CancellationToken token);
 
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : BaseEntity;
     }

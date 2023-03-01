@@ -1,23 +1,17 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using PdfSharp.Drawing;
+﻿using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using Serilog;
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Training.Authorization;
 using Training.Models;
 using Training.Services;
-using Type = Training.Models.Type;
 
 namespace Training.Controllers
 {

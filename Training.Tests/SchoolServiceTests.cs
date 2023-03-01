@@ -21,10 +21,10 @@ namespace Training.Tests
                 .Returns(new School ());
 
             var service = new Repository<School>(ctx);
-            await service.CreateAsync(new School(), new CancellationToken());
+            await service.CreateAsync(new School(), CancellationToken.None);
 
             dbSet.Received(1).Add(Arg.Any<School>());
-            await ctx.Received(1).SaveChangesAsync();
+            await ctx.Received(1).SaveChangesAsync(CancellationToken.None);
         }
     }
 }

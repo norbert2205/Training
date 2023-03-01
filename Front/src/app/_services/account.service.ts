@@ -31,6 +31,7 @@ export class AccountService {
         "Password": password
         })
             .pipe(map(user => {
+                localStorage.setItem('user', JSON.stringify(user));
                 this.userSubject.next(user);
                 this.startAuthenticateTimer();
                 return user;
@@ -38,6 +39,7 @@ export class AccountService {
     }
     
     logout() {
+        localStorage.removeItem('user');
         this.stopAuthenticateTimer();
         this.userSubject.next(null);
         this.router.navigate(['/account/login']);
@@ -61,6 +63,7 @@ export class AccountService {
                 // update stored user if the logged in user updated their own record
                 if (id == this.userValue?.Id) {
                     const user = { ...this.userValue, ...params };
+                    localStorage.setItem('user', JSON.stringify(user));
                     // publish updated user to subscribers
                     this.userSubject.next(user);
                 }

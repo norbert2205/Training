@@ -44,10 +44,10 @@ namespace Training.Data
             return base.Entry(entity);
         }
 
-        public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public new async Task<int> SaveChangesAsync(CancellationToken token)
         {
             TrackChanges();
-            return await base.SaveChangesAsync(cancellationToken);
+            return await base.SaveChangesAsync(token);
         }
 
         private void TrackChanges()

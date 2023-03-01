@@ -17,7 +17,7 @@ namespace Training.Tests
         public void Given_School_When_CreateSchool_Then_Success()
         {
             var controller = new SchoolController(Substitute.For<ISchoolService>(), Substitute.For<ILogger>());
-            var actionResult = controller.Create(new School(), new CancellationToken());
+            var actionResult = controller.Create(new School(), CancellationToken.None);
             var createdResult = actionResult.Result as CreatedAtRouteNegotiatedContentResult<School>;
 
             createdResult.Should().NotBeNull();

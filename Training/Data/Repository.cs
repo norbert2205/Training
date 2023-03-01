@@ -28,6 +28,7 @@ namespace Training.Data
                 {
                     throw new ArgumentNullException(nameof(entity));
                 }
+
                 Entities.Add(entity);
                 await _ctx.SaveChangesAsync(token);
 
@@ -78,6 +79,7 @@ namespace Training.Data
                         msg += Environment.NewLine + $"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}";
                     }
                 }
+
                 var fail = new Exception(msg, dbEx);
                 throw fail;
             }
@@ -106,6 +108,7 @@ namespace Training.Data
                         msg += Environment.NewLine + $"Property: {validationError.PropertyName} Error: {validationError.ErrorMessage}";
                     }
                 }
+
                 var fail = new Exception(msg, dbEx);
                 throw fail;
             }

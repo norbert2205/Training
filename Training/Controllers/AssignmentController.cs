@@ -9,6 +9,7 @@ using Training.Services;
 
 namespace Training.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/[controller]")]
     public class AssignmentController : ApiController, IAssignmentController
     {
