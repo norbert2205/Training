@@ -15,6 +15,6 @@ namespace Training.Controllers
 
         Task<IHttpActionResult> GetAll(CancellationToken token);
 
-        Task<IHttpActionResult> Update([FromBody] Assignment newAssignment);
+        Task<IHttpActionResult> Update([FromBody] Assignment newAssignment, CancellationToken token);
     }
 }

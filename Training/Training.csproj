@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Authorization\JwtHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\IAssignmentController.cs" />
     <Compile Include="Controllers\ICourseController.cs" />

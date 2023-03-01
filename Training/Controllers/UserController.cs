@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Training.Authorization;
 using Training.Models;
 using Training.Services;
 using Type = Training.Models.Type;
@@ -38,7 +39,7 @@ namespace Training.Controllers
         {
             try
             {
-                var items = await _service.GetUsersAsync();
+                var items = await _service.GetUsersAsync(token);
 
                 if (items == null)
                 {
@@ -62,7 +63,7 @@ namespace Training.Controllers
         {
             try
             {
-                var item = await _service.FindUserAsync(_ => _.Id == id);
+                var item = await _service.FindUserAsync(_ => _.Id == id, token);
 
                 if (item == null)
                 {
@@ -78,36 +79,12 @@ namespace Training.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IHttpActionResult> Create(string firstName, string lastName, string phoneNumber, Type type, CancellationToken token)
-        {
-            try
-            {
-                var user = new User
-                {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    PhoneNumber = phoneNumber,
-                    Type = type
-                };
-
-                await _service.CreateUserAsync(user);
-
-                return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e, string.Empty);
-                return StatusCode(HttpStatusCode.InternalServerError);
-            }
-        }
-
         [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id, CancellationToken token)
         {
             try
             {
-                await _service.DeleteUserAsync(await _service.FindUserAsync(_ => _.Id == id));
+                await _service.DeleteUserAsync(await _service.FindUserAsync(_ => _.Id == id, token), token);
                 return Ok();
             }
             catch (Exception e)
@@ -118,12 +95,12 @@ namespace Training.Controllers
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> Update(int id, [FromBody] User newUser)
+        public async Task<IHttpActionResult> Update(int id, [FromBody] User newUser, CancellationToken token)
         {
             try
             {
                 newUser.Id = id;
-                await _service.UpdateUserAsync(newUser);
+                await _service.UpdateUserAsync(newUser, token);
                 return Ok();
             }
             catch (Exception e)
@@ -135,16 +112,16 @@ namespace Training.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IHttpActionResult> Register([FromBody] User user)
+        public async Task<IHttpActionResult> Register([FromBody] User user, CancellationToken token)
         {
             try
             {
-                if (await _service.FindUserAsync(_ => _.Email == user.Email) != null)
+                if (await _service.FindUserAsync(_ => _.Email == user.Email, token) != null)
                 {
                     return BadRequest("User already exists");
                 }
 
-                await _service.CreateUserAsync(user);
+                await _service.CreateUserAsync(user, token);
 
                 return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
             }
@@ -157,33 +134,16 @@ namespace Training.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken token)
         {
             if (loginRequest != null)
             {
                 var user = await _service.FindUserAsync(_ =>
-                    _.Username == loginRequest.Username && _.Password == loginRequest.Password);
+                    _.Username == loginRequest.Username && _.Password == loginRequest.Password, token);
 
                 if (user != null)
                 {
-                    var key = "jwt_signing_secret_key";
-                    var issuer = "http://localhost";
-                    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
-                    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-                    var permClaims = new List<Claim>
-                    {
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(ClaimTypes.Name, loginRequest.Username)
-                    };
-
-                    var token = new JwtSecurityToken(issuer,
-                        issuer,
-                        permClaims,
-                        expires: DateTime.Now.AddHours(1),
-                        signingCredentials: credentials);
-
-                    user.Token = new JwtSecurityTokenHandler().WriteToken(token);
+                    user.Token = JwtHelper.CreateJwt(loginRequest);
 
                     return Ok(user);
                 }

@@ -26,7 +26,7 @@ namespace Training.Controllers
         {
             try
             {
-                var item = await _service.GetAssignmentAsync(id);
+                var item = await _service.GetAssignmentAsync(id, token);
 
                 if (item == null)
                 {
@@ -47,7 +47,7 @@ namespace Training.Controllers
         {
             try
             {
-                await _service.CreateAssignmentAsync(assignment);
+                await _service.CreateAssignmentAsync(assignment, token);
 
                 return CreatedAtRoute("DefaultApi", new { id = assignment.Id }, assignment);
             }
@@ -63,7 +63,7 @@ namespace Training.Controllers
         {
             try
             {
-                await _service.DeleteAssignmentAsync(await _service.GetAssignmentAsync(id));
+                await _service.DeleteAssignmentAsync(await _service.GetAssignmentAsync(id, token), token);
                 return Ok();
             }
             catch (Exception e)
@@ -74,11 +74,11 @@ namespace Training.Controllers
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> Update([FromBody] Assignment newAssignment)
+        public async Task<IHttpActionResult> Update([FromBody] Assignment newAssignment, CancellationToken token)
         {
             try
             {
-                await _service.UpdateAssignmentAsync(newAssignment);
+                await _service.UpdateAssignmentAsync(newAssignment, token);
                 return Ok();
             }
             catch (Exception e)
@@ -93,7 +93,7 @@ namespace Training.Controllers
         {
             try
             {
-                var item = await _service.GetAssignmentsAsync();
+                var item = await _service.GetAssignmentsAsync(token);
 
                 if (item == null)
                 {

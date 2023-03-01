@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Serilog;
@@ -21,11 +22,11 @@ namespace Training.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> GetAll()
+        public async Task<IHttpActionResult> GetAll(CancellationToken token)
         {
             try
             {
-                var item = await _service.GetSchoolsAsync();
+                var item = await _service.GetSchoolsAsync(token);
 
                 if (item == null)
                 {
@@ -42,11 +43,11 @@ namespace Training.Controllers
         }
 
         [HttpGet]
-        public async Task<IHttpActionResult> Get(int id)
+        public async Task<IHttpActionResult> Get(int id, CancellationToken token)
         {
             try
             {
-                var item = await _service.GetSchoolAsync(id);
+                var item = await _service.GetSchoolAsync(id, token);
 
                 if (item == null)
                 {
@@ -63,11 +64,11 @@ namespace Training.Controllers
         }
 
         [HttpPost]
-        public async Task<IHttpActionResult> Create(School school)
+        public async Task<IHttpActionResult> Create(School school, CancellationToken token)
         {
             try
             {
-                await _service.CreateSchoolAsync(school);
+                await _service.CreateSchoolAsync(school, token);
 
                 return CreatedAtRoute("DefaultApi", new { id = school.Id }, school);
             }
@@ -79,11 +80,11 @@ namespace Training.Controllers
         }
 
         [HttpDelete]
-        public async Task<IHttpActionResult> Delete(int id)
+        public async Task<IHttpActionResult> Delete(int id, CancellationToken token)
         {
             try
             {
-                await _service.DeleteSchoolAsync(await _service.GetSchoolAsync(id));
+                await _service.DeleteSchoolAsync(await _service.GetSchoolAsync(id, token), token);
                 return Ok();
             }
             catch (Exception e)
@@ -94,11 +95,11 @@ namespace Training.Controllers
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> Update([FromBody] School newSchool)
+        public async Task<IHttpActionResult> Update([FromBody] School newSchool, CancellationToken token)
         {
             try
             {
-                await _service.UpdateSchoolAsync(newSchool);
+                await _service.UpdateSchoolAsync(newSchool, token);
                 return Ok();
             }
             catch (Exception e)

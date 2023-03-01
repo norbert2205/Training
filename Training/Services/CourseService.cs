@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Threading;
 using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
@@ -15,30 +16,30 @@ namespace Training.Services
             _courseRepository = courseRepository;
         }
 
-        public async Task<IEnumerable<Course>> GetCoursesAsync()
+        public async Task<IEnumerable<Course>> GetCoursesAsync(CancellationToken token)
         {
             return await _courseRepository.GetAll
-                .ToListAsync();
+                .ToListAsync(token);
         }
 
-        public async Task<Course> GetCourseAsync(int id)
+        public async Task<Course> GetCourseAsync(int id, CancellationToken token)
         {
-            return await _courseRepository.FindAsync(_ => _.Id == id);
+            return await _courseRepository.FindAsync(_ => _.Id == id, token);
         }
 
-        public async Task<Course> CreateCourseAsync(Course course)
+        public async Task<Course> CreateCourseAsync(Course course, CancellationToken token)
         {
-            return await _courseRepository.CreateAsync(course);
+            return await _courseRepository.CreateAsync(course, token);
         }
 
-        public async Task<Course> UpdateCourseAsync(Course course)
+        public async Task<Course> UpdateCourseAsync(Course course, CancellationToken token)
         {
-            return await _courseRepository.UpdateAsync(course);
+            return await _courseRepository.UpdateAsync(course, token);
         }
 
-        public async Task<int> DeleteCourseAsync(Course course)
+        public async Task<int> DeleteCourseAsync(Course course, CancellationToken token)
         {
-            return await _courseRepository.DeleteAsync(course);
+            return await _courseRepository.DeleteAsync(course, token);
         }
     }
 }

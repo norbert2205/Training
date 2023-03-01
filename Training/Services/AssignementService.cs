@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Threading;
 using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
@@ -15,30 +16,30 @@ namespace Training.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Assignment>> GetAssignmentsAsync()
+        public async Task<IEnumerable<Assignment>> GetAssignmentsAsync(CancellationToken token)
         {
             return await _repository.GetAll
-                .ToListAsync();
+                .ToListAsync(token);
         }
 
-        public async Task<Assignment> GetAssignmentAsync(int id)
+        public async Task<Assignment> GetAssignmentAsync(int id, CancellationToken token)
         {
-            return await _repository.FindAsync(_ => _.Id == id);
+            return await _repository.FindAsync(_ => _.Id == id, token);
         }
 
-        public async Task<Assignment> CreateAssignmentAsync(Assignment assignment)
+        public async Task<Assignment> CreateAssignmentAsync(Assignment assignment, CancellationToken token)
         {
-            return await _repository.CreateAsync(assignment);
+            return await _repository.CreateAsync(assignment, token);
         }
 
-        public async Task<Assignment> UpdateAssignmentAsync(Assignment assignment)
+        public async Task<Assignment> UpdateAssignmentAsync(Assignment assignment, CancellationToken token)
         {
-            return await _repository.UpdateAsync(assignment);
+            return await _repository.UpdateAsync(assignment, token);
         }
 
-        public async Task<int> DeleteAssignmentAsync(Assignment assignment)
+        public async Task<int> DeleteAssignmentAsync(Assignment assignment, CancellationToken token)
         {
-            return await _repository.DeleteAsync(assignment);
+            return await _repository.DeleteAsync(assignment, token);
         }
     }
 }

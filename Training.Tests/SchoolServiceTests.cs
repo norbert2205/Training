@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System.Data.Entity;
+using System.Threading;
 using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
@@ -20,7 +21,7 @@ namespace Training.Tests
                 .Returns(new School ());
 
             var service = new Repository<School>(ctx);
-            await service.CreateAsync(new School());
+            await service.CreateAsync(new School(), new CancellationToken());
 
             dbSet.Received(1).Add(Arg.Any<School>());
             await ctx.Received(1).SaveChangesAsync();

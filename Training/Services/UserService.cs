@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Training.Data;
 using Training.Models;
@@ -17,41 +18,41 @@ namespace Training.Services
             _userRepository = userRepository;
         }
 
-        public async Task<IEnumerable<User>> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync(CancellationToken token)
         {
             return await _userRepository.GetAll
-                .ToListAsync();
+                .ToListAsync(token);
         }
 
-        public async Task<User> GetSchoolAsync(int id)
+        public async Task<User> GetSchoolAsync(int id, CancellationToken token)
         {
-            return await _userRepository.FindAsync(_ => _.Id == id);
+            return await _userRepository.FindAsync(_ => _.Id == id, token);
         }
 
-        public async Task<User> CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user, CancellationToken token)
         {
-            return await _userRepository.CreateAsync(user);
+            return await _userRepository.CreateAsync(user, token);
         }
 
-        public async Task<bool> IsValidLoginAsync(LoginRequest loginRequest)
+        public async Task<bool> IsValidLoginAsync(LoginRequest loginRequest, CancellationToken token)
         {
             return await _userRepository.FindAsync(_ =>
-                _.Username == loginRequest.Username && _.Password == loginRequest.Password) != null;
+                _.Username == loginRequest.Username && _.Password == loginRequest.Password, token) != null;
         }
 
-        public async Task<User> UpdateUserAsync(User user)
+        public async Task<User> UpdateUserAsync(User user, CancellationToken token)
         {
-            return await _userRepository.UpdateAsync(user);
+            return await _userRepository.UpdateAsync(user, token);
         }
 
-        public async Task<int> DeleteUserAsync(User user)
+        public async Task<int> DeleteUserAsync(User user, CancellationToken token)
         {
-            return await _userRepository.DeleteAsync(user);
+            return await _userRepository.DeleteAsync(user, token);
         }
 
-        public async Task<User> FindUserAsync(Expression<Func<User, bool>> match)
+        public async Task<User> FindUserAsync(Expression<Func<User, bool>> match, CancellationToken token)
         {
-            return await _userRepository.FindAsync(match);
+            return await _userRepository.FindAsync(match, token);
         }
     }
 }

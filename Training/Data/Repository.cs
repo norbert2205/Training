@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Training.Data
@@ -19,7 +20,7 @@ namespace Training.Data
 
         protected IDbSet<T> Entities => _entities ?? (_entities = _ctx.Set<T>());
 
-        public async Task<T> CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity, CancellationToken token)
         {
             try
             {
@@ -28,7 +29,7 @@ namespace Training.Data
                     throw new ArgumentNullException(nameof(entity));
                 }
                 Entities.Add(entity);
-                await _ctx.SaveChangesAsync();
+                await _ctx.SaveChangesAsync(token);
 
                 return entity;
             }
@@ -49,7 +50,7 @@ namespace Training.Data
             }
         }
 
-        public async Task<T> UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity, CancellationToken token)
         {
             try
             {
@@ -63,7 +64,7 @@ namespace Training.Data
                 if (exist != null)
                 {
                     _ctx.Entry(exist).CurrentValues.SetValues(entity);
-                    await _ctx.SaveChangesAsync();
+                    await _ctx.SaveChangesAsync(token);
                 }
                 return exist;
             }
@@ -82,7 +83,7 @@ namespace Training.Data
             }
         }
 
-        public async Task<int> DeleteAsync(T entity)
+        public async Task<int> DeleteAsync(T entity, CancellationToken token)
         {
             try
             {
@@ -92,7 +93,7 @@ namespace Training.Data
                 }
 
                 Entities.Remove(entity);
-                return await _ctx.SaveChangesAsync();
+                return await _ctx.SaveChangesAsync(token);
             }
             catch (DbEntityValidationException dbEx)
             {
@@ -115,9 +116,9 @@ namespace Training.Data
             return Entities.Find(id);
         }
 
-        public async Task<T> FindAsync(Expression<Func<T, bool>> match)
+        public async Task<T> FindAsync(Expression<Func<T, bool>> match, CancellationToken token)
         {
-            return await _ctx.Set<T>().SingleOrDefaultAsync(match);
+            return await _ctx.Set<T>().SingleOrDefaultAsync(match, token);
         }
 
         public IQueryable<T> GetAll => Entities;

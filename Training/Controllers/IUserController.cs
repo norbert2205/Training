@@ -7,18 +7,16 @@ namespace Training.Controllers
 {
     public interface IUserController
     {
-        Task<IHttpActionResult> Create(string firstName, string lastName, string phoneNumber, Type type, CancellationToken token);
-
         Task<IHttpActionResult> Delete(int id, CancellationToken token);
 
         Task<IHttpActionResult> Get(int id, CancellationToken token);
 
         Task<IHttpActionResult> GetAll(CancellationToken token);
 
-        Task<IHttpActionResult> Update(int id, [FromBody] User newUser);
+        Task<IHttpActionResult> Update(int id, [FromBody] User newUser, CancellationToken token);
 
-        Task<IHttpActionResult> Register([FromBody] User user);
+        Task<IHttpActionResult> Register([FromBody] User user, CancellationToken token);
 
-        Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest);
+        Task<IHttpActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken token);
     }
 }
