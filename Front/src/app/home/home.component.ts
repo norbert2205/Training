@@ -1,12 +1,13 @@
 ﻿import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { User } from '@app/_models';
+import { User, UserType } from '@app/_models';
 import { AccountService } from '@app/_services';
 import { environment } from '@environments/environment';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent {
     user: User | null;
+    userTypes = UserType;
 
     constructor(private accountService: AccountService,
         private http: HttpClient) {

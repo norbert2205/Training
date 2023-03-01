@@ -1,5 +1,5 @@
 ﻿<h1>Courses</h1>
-<a routerLink="add" class="btn btn-sm btn-success mb-2">Add Course</a>
+<a routerLink="add" class="btn btn-sm btn-success mb-2" *ngIf="user?.Type===userTypes.Admin">Add Course</a>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -11,8 +11,8 @@
         <tr *ngFor="let course of courses">
             <td>{{course.Name}}</td>
             <td style="white-space: nowrap">
-                <a routerLink="Manage/{{course.Id}}" class="btn btn-sm btn-primary me-1">Manage</a>
-                <button (click)="deleteCourse(course.Id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="course.isDeleting">
+                <a routerLink="Manage/{{course.Id}}" class="btn btn-sm btn-primary me-1" *ngIf="user?.Type!=userTypes.Student">Manage</a>
+                <button (click)="deleteCourse(course.Id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="course.isDeleting" *ngIf="user?.Type===userTypes.Admin">
                     <span *ngIf="course.isDeleting" class="spinner-border spinner-border-sm"></span>
                     <span *ngIf="!course.isDeleting">Delete</span>
                 </button>

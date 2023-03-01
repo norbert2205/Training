@@ -1,7 +1,7 @@
 ﻿<div class="p-4">
     <div class="container">
         <h1>Hi {{user?.FirstName}}!</h1>
-        <p><a routerLink="/users">Manage Users</a></p>
-        <button class="btn btn-primary" (click)="onGeneratePdf()">Generate PDF</button>
+        <p *ngIf="user?.Type===userTypes.Admin"><a routerLink="/users">Manage Users</a></p>
+        <button *ngIf="user?.Type!=userTypes.Student" class="btn btn-primary" (click)="onGeneratePdf()">Generate PDF</button>
     </div>
 </div>
