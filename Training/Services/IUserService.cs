@@ -18,7 +18,5 @@ namespace Training.Services
         Task<User> CreateUserAsync(User user, CancellationToken token);
 
         Task<IEnumerable<User>> GetUsersAsync(CancellationToken token);
-
-        Task<User> GetSchoolAsync(int id, CancellationToken token);
     }
 }

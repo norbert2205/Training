@@ -18,7 +18,7 @@ namespace Training.Models
 
         string Email { get; set; }
 
-        Type Type { get; set; }
+        UserType Type { get; set; }
 
         ICollection<Course> Courses { get; set; }
 

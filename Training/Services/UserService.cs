@@ -24,11 +24,6 @@ namespace Training.Services
                 .ToListAsync(token);
         }
 
-        public async Task<User> GetSchoolAsync(int id, CancellationToken token)
-        {
-            return await _userRepository.FindAsync(_ => _.Id == id, token);
-        }
-
         public async Task<User> CreateUserAsync(User user, CancellationToken token)
         {
             return await _userRepository.CreateAsync(user, token);

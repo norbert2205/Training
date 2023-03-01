@@ -1,6 +1,6 @@
 ﻿namespace Training.Models
 {
-    public enum Type
+    public enum UserType
     {
         Admin = 1,
         Teacher = 2,

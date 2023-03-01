@@ -114,6 +114,9 @@ namespace Training.Controllers
                 {
                     return BadRequest("User already exists");
                 }
+                
+                //TODO: handle assigning permissions
+                user.Type = UserType.Student;
 
                 await _service.CreateUserAsync(user, token);
 
